@@ -28,10 +28,6 @@ Install or prepare the following on your Windows machine:
 4. SQL Server must accept TCP/IP connections. The default example uses port `1433`.
 5. SQL Server must allow SQL Server Authentication (Mixed Mode) because the project connects with SQL logins.
 
-If SQL Server is installed but connections fail, use SQL Server Configuration Manager to enable **TCP/IP** for your instance and restart the SQL Server service. In SSMS, check **Server Properties → Security → SQL Server and Windows Authentication mode (Mixed Mode)**; restart the service after changing the authentication mode. Use the actual SQL Server port or named instance in `.env`.
-
-> DBeaver can be used to connect to SQL Server when its Microsoft SQL Server driver is configured. DBeaver is a database client; it does not install the SQL Server database engine. MySQL and PostgreSQL are not substitutes for SQL Server for this assessment.
-
 
 ## 2. Prepare the SQL Server setup login (one time)
 
