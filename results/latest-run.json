@@ -1,0 +1,94 @@
+{
+  "apiBaseUrl": "http://localhost:3000",
+  "concurrentRequestCount": 100,
+  "tests": [
+    {
+      "name": "API health endpoint",
+      "passed": true,
+      "details": "HTTP 200"
+    },
+    {
+      "name": "Reject missing patientId",
+      "passed": true,
+      "details": "HTTP 400"
+    },
+    {
+      "name": "Reject non-positive slotId",
+      "passed": true,
+      "details": "HTTP 400"
+    },
+    {
+      "name": "Return 404 for unknown slot",
+      "passed": true,
+      "details": "HTTP 404"
+    },
+    {
+      "name": "Return 404 for unknown patient",
+      "passed": true,
+      "details": "HTTP 404"
+    },
+    {
+      "name": "Do not claim slot when patient is missing",
+      "passed": true,
+      "details": "{\"SlotId\":997,\"IsBooked\":false,\"AppointmentCount\":0}"
+    },
+    {
+      "name": "Return conflict when appointment INSERT hits the unique constraint",
+      "passed": true,
+      "details": "HTTP 409"
+    },
+    {
+      "name": "Roll back slot claim when appointment INSERT fails",
+      "passed": true,
+      "details": "{\"SlotId\":997,\"IsBooked\":false,\"AppointmentCount\":1}"
+    },
+    {
+      "name": "Book an available slot",
+      "passed": true,
+      "details": "HTTP 201"
+    },
+    {
+      "name": "Reject an already-booked slot",
+      "passed": true,
+      "details": "HTTP 409"
+    },
+    {
+      "name": "Concurrent requests: exactly one success",
+      "passed": true,
+      "details": "201 responses=1; total requests=100"
+    },
+    {
+      "name": "Concurrent requests: all other requests conflict",
+      "passed": true,
+      "details": "409 responses=99; expected=99"
+    },
+    {
+      "name": "No unexpected concurrent HTTP responses",
+      "passed": true,
+      "details": "unexpected responses=0"
+    },
+    {
+      "name": "Database contains exactly one booking for concurrent slot",
+      "passed": true,
+      "details": "{\"SlotId\":999,\"IsBooked\":true,\"AppointmentCount\":1}"
+    },
+    {
+      "name": "Subsequent request cannot book the winning slot again",
+      "passed": true,
+      "details": "HTTP 409"
+    }
+  ],
+  "databaseVerification": {
+    "concurrentSlot": {
+      "SlotId": 999,
+      "IsBooked": true,
+      "AppointmentCount": 1
+    },
+    "httpStatusCounts": {
+      "201": 1,
+      "409": 99
+    }
+  },
+  "overall": "PASSED",
+  "evidenceNote": "Reconstructed from the successful 100-request PowerShell console output supplied by the project owner. The supplied transcript did not include timestamps or measured duration. Re-run npm run test:assessment -- --requests=100 to generate a timestamped report directly from the test runner."
+}
